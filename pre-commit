@@ -1,0 +1,48 @@
+#! /bin/bash
+#
+# This script checks if all staged php files are valid against the Fork coding standards
+# and if there are no javascript errors
+# dependencies:
+# 	codesniffer (http://pear.php.net/package/PHP_CodeSniffer/redirected)
+# 	Fork coding standards in ~/.phpcs/Fork (https://github.com/WouterSioen/dotfiles)
+# 	esvalidate (https://github.com/duereg/esvalidate)
+#
+# @version	1.0.0
+# @author	Wouter Sioen <wouter.sioen@wijs.be>
+
+# fetch all changed php files and validate them
+files=$(git diff-index --name-only HEAD | grep -P '\.php$')
+for file in $files; do
+
+	# first check if they are valid php files
+	output=`php -l $file | grep 'PHP Parse error'`
+
+	# if it did contain errors, we have output
+	if [ -n "$output" ]; then
+		echo "$file contains php syntax errors"
+		exit 1
+	fi
+
+	# checks if the phpcs output contains '(0 errors, 0 warnings)'
+	output=`phpcs -v --standard="$HOME/.phpcs/Fork" --report=full $file | grep '| ERROR |'`
+
+	# if it did contain errors, we have output
+	if [ -n "$output" ]; then
+		echo "$file fails coding standards"
+		echo $output
+		exit 1
+	fi
+done
+
+# fetch all changed js files and validate them
+files=$(git diff-index --name-only HEAD | grep -P '\.js$')
+for file in $files; do
+	output=`esvalidate $file`
+
+	# if our output is not empty, there were errors
+	if [ -n "$output" ]; then
+		echo "$file contains javascript syntax errors"
+		echo $output
+		exit 1
+	fi
+done
