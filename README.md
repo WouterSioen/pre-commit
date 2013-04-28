@@ -27,3 +27,7 @@ Esvalidate is easy to install with the node package manager:
 ## Installation
 
 Put the pre-commit file in the .git/hooks/ folder in your git repository.
+
+Don't forget to make the pre-commit file executable
+
+	chmod +x .git/hooks/pre-commit
