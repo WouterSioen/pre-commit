@@ -10,27 +10,30 @@
 # @version	1.0.0
 # @author	Wouter Sioen <wouter.sioen@wijs.be>
 
+# create empty errors array
+declare -a errors
+
 # fetch all changed php files and validate them
 files=$(git diff-index --name-only HEAD | grep -P '\.php$')
 for file in $files; do
 
 	# first check if they are valid php files
-	output=`php -l $file | grep 'PHP Parse error'`
+	output=`php -l $file | grep 'Errors parsing'`
 
 	# if it did contain errors, we have output
 	if [ -n "$output" ]; then
 		echo "$file contains php syntax errors"
-		exit 1
+		errors=("${errors[@]}" "$output")
 	fi
 
 	# checks if the phpcs output contains '(0 errors, 0 warnings)'
-	output=`phpcs -v --standard="$HOME/.phpcs/Fork" --report=full $file | grep '| ERROR |'`
+	output=`phpcs --standard="$HOME/.phpcs/Fork" --report=full $file | grep '| ERROR |'`
 
 	# if it did contain errors, we have output
 	if [ -n "$output" ]; then
 		echo "$file fails coding standards"
-		echo $output
-		exit 1
+		phpcs --standard="$HOME/.phpcs/Fork" --report=full $file
+		errors=("${errors[@]}" "$output")
 	fi
 done
 
@@ -43,6 +46,11 @@ for file in $files; do
 	if [ -n "$output" ]; then
 		echo "$file contains javascript syntax errors"
 		echo $output
-		exit 1
+		errors=("${errors[@]}" "$output")
 	fi
 done
+
+# if we have errors, exit with 1
+if [ -n "errors" ]; then
+	exit 1
+fi
