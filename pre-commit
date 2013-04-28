@@ -51,6 +51,6 @@ for file in $files; do
 done
 
 # if we have errors, exit with 1
-if [ -n "errors" ]; then
+if [ -n "$errors" ]; then
 	exit 1
 fi
