@@ -6,6 +6,7 @@
 # 	codesniffer (http://pear.php.net/package/PHP_CodeSniffer/redirected)
 # 	Fork coding standards in ~/.phpcs/Fork (https://github.com/WouterSioen/dotfiles)
 # 	esvalidate (https://github.com/duereg/esvalidate)
+# 	CSS lint (https://github.com/stubbornella/csslint/wiki/Command-line-interface)
 #
 # @version	1.0.0
 # @author	Wouter Sioen <wouter.sioen@wijs.be>
@@ -54,6 +55,19 @@ for file in $files; do
 	# if our output is not empty, there were errors
 	if [ -n "$output" ]; then
 		echo "$file contains javascript syntax errors"
+		echo $output
+		errors=("${errors[@]}" "$output")
+	fi
+done
+
+# fetch all changed css files and validate them
+files=$(git diff-index --name-only --diff-filter=ACMR $against | grep '\.css$')
+for file in $files; do
+	output=`csslint $file | grep ': error'`
+
+	# if our output is not empty, there were errors
+	if [ -n "$output" ]; then
+		echo "$file contains css syntax errors"
 		echo $output
 		errors=("${errors[@]}" "$output")
 	fi

@@ -22,7 +22,15 @@ If you want to put it in another place, just change the --standard parameter in 
 
 Esvalidate is easy to install with the node package manager:
 
-	npm install -g esvalidate
+	sudo npm install -g esvalidate
+
+### CSS lint
+
+[https://github.com/stubbornella/csslint/wiki/Command-line-interface](https://github.com/stubbornella/csslint/wiki/Command-line-interface)
+
+CSS Lint is easy to install with the node package manager:
+
+	sudo npm install -g csslint
 
 ## Installation
 
