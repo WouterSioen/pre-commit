@@ -23,7 +23,7 @@ else
 fi
 
 # fetch all changed php files and validate them
-files=$(git diff-index --name-only --diff-filter=ACMR $against | grep -P '\.php$')
+files=$(git diff-index --name-only --diff-filter=ACMR $against | grep '\.php$')
 for file in $files; do
 
 	# first check if they are valid php files
@@ -47,7 +47,7 @@ for file in $files; do
 done
 
 # fetch all changed js files and validate them
-files=$(git diff-index --name-only --diff-filter=ACMR $against | grep -P '\.js$')
+files=$(git diff-index --name-only --diff-filter=ACMR $against | grep '\.js$')
 for file in $files; do
 	output=`esvalidate $file`
 
