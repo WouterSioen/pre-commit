@@ -63,7 +63,7 @@ done
 # fetch all changed css files and validate them
 files=$(git diff-index --name-only --diff-filter=ACMR $against | grep '\.css$')
 for file in $files; do
-	output=`csslint $file | grep ': error'`
+	output=`csslint --format=compact $file | grep 'Error -'`
 
 	# if our output is not empty, there were errors
 	if [ -n "$output" ]; then
