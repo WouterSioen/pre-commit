@@ -2,7 +2,7 @@
 
 ## About
 
-This is a pre commit script that checks staged files for syntax errors and Fork CMS coding standards. 
+This is a pre commit script that checks added, copied, modified or renamed files for syntax errors and Fork CMS coding standards.
 
 ## Dependencies
 

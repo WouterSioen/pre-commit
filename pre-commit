@@ -1,7 +1,7 @@
 #! /bin/bash
 #
-# This script checks if all staged php files are valid against the Fork coding standards
-# and if there are no javascript errors
+# This script checks if all added, copied, modified or renamed files are valid against the Fork coding standards
+# and if there are no php, javascript or css errors
 # dependencies:
 # 	codesniffer (http://pear.php.net/package/PHP_CodeSniffer/redirected)
 # 	Fork coding standards in ~/.phpcs/Fork (https://github.com/WouterSioen/dotfiles)
