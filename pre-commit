@@ -23,55 +23,84 @@ else
 	against=4b825dc642cb6eb9a060e54bf8d69288fbee4904
 fi
 
+# Stash changes, we only want to check what's really in the commit
+git stash -q --keep-index
+
 # fetch all changed php files and validate them
 files=$(git diff-index --name-only --diff-filter=ACMR $against | grep '\.php$')
-for file in $files; do
+if [ -n "$files" ]; then
 
-	# first check if they are valid php files
-	output=`php -l $file | grep 'Errors parsing'`
+	echo 'Checking PHP Files'
+	echo '------------------'
+	echo
 
-	# if it did contain errors, we have output
-	if [ -n "$output" ]; then
-		echo "$file contains php syntax errors"
-		errors=("${errors[@]}" "$output")
-	fi
+	for file in $files; do
 
-	# checks if the phpcs output contains '(0 errors, 0 warnings)'
-	output=`phpcs --standard="$HOME/.phpcs/Fork" --report=full $file | grep '| ERROR |'`
+		# first check if they are valid php files
+		output=`php -l $file | grep 'Errors parsing'`
 
-	# if it did contain errors, we have output
-	if [ -n "$output" ]; then
-		echo "$file fails coding standards"
-		phpcs --standard="$HOME/.phpcs/Fork" --report=full $file
-		errors=("${errors[@]}" "$output")
-	fi
-done
+		# if it did contain errors, we have output
+		if [ -n "$output" ]; then
+			echo "$file contains php syntax errors"
+			errors=("${errors[@]}" "$output")
+		fi
+
+		# checks if the phpcs output contains '(0 errors, 0 warnings)'
+		output=`phpcs --standard="$HOME/.phpcs/Fork" --report=full $file | grep '| ERROR |'`
+
+		# if it did contain errors, we have output
+		if [ -n "$output" ]; then
+			echo "$file fails coding standards"
+			phpcs --standard="$HOME/.phpcs/Fork" --report=full $file
+			errors=("${errors[@]}" "$output")
+		fi
+	done
+fi
 
 # fetch all changed js files and validate them
 files=$(git diff-index --name-only --diff-filter=ACMR $against | grep '\.js$')
-for file in $files; do
-	output=`esvalidate $file`
+if [ -n "$files" ]; then
 
-	# if our output is not empty, there were errors
-	if [ -n "$output" ]; then
-		echo "$file contains javascript syntax errors"
-		echo $output
-		errors=("${errors[@]}" "$output")
-	fi
-done
+	echo
+	echo 'Checking Javascript Files'
+	echo '------------------'
+	echo
+
+	for file in $files; do
+		output=`esvalidate $file`
+
+		# if our output is not empty, there were errors
+		if [ -n "$output" ]; then
+			echo "$file contains javascript syntax errors"
+			echo $output
+			errors=("${errors[@]}" "$output")
+		fi
+	done
+fi
 
 # fetch all changed css files and validate them
 files=$(git diff-index --name-only --diff-filter=ACMR $against | grep '\.css$')
-for file in $files; do
-	output=`csslint --format=compact $file | grep 'Error -'`
+if [ -n "$files" ]; then
 
-	# if our output is not empty, there were errors
-	if [ -n "$output" ]; then
-		echo "$file contains css syntax errors"
-		echo $output
-		errors=("${errors[@]}" "$output")
-	fi
-done
+	echo
+	echo 'Checking CSS Files'
+	echo '------------------'
+	echo
+
+	for file in $files; do
+		output=`csslint --format=compact $file | grep 'Error -'`
+
+		# if our output is not empty, there were errors
+		if [ -n "$output" ]; then
+			echo "$file contains css syntax errors"
+			echo $output
+			errors=("${errors[@]}" "$output")
+		fi
+	done
+fi
+
+# Let's pop our stash. We don't want to lose anything
+git stash pop -q
 
 # if we have errors, exit with 1
 if [ -n "$errors" ]; then
