@@ -4,11 +4,10 @@
 # and if there are no php, javascript or css errors
 # dependencies:
 # 	codesniffer (http://pear.php.net/package/PHP_CodeSniffer/redirected)
-# 	Fork coding standards in ~/.phpcs/Fork (https://github.com/WouterSioen/dotfiles)
 # 	esvalidate (https://github.com/duereg/esvalidate)
 # 	CSS lint (https://github.com/stubbornella/csslint/wiki/Command-line-interface)
 #
-# @version	1.0.0
+# @version	1.1.0
 # @author	Wouter Sioen <wouter.sioen@wijs.be>
 
 # create empty errors array
@@ -45,13 +44,13 @@ if [ -n "$files" ]; then
 			errors=("${errors[@]}" "$output")
 		fi
 
-		# checks if the phpcs output contains '(0 errors, 0 warnings)'
-		output=`phpcs --standard="$HOME/.phpcs/Fork" --report=full $file | grep '| ERROR |'`
+		# checks if the phpcs output contains '| ERROR |'
+		output=`phpcs --standard=PSR2 --extensions=php --encoding=utf8 --report=full $file | grep '| ERROR |'`
 
 		# if it did contain errors, we have output
 		if [ -n "$output" ]; then
 			echo "$file fails coding standards"
-			phpcs --standard="$HOME/.phpcs/Fork" --report=full $file
+			phpcs --standard=PSR2 --extensions=php --encoding=utf8 --report=full $file
 			errors=("${errors[@]}" "$output")
 		fi
 	done
