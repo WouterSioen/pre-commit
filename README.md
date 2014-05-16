@@ -4,6 +4,14 @@
 
 This is a pre commit script that checks added, copied, modified or renamed files for syntax errors and PSR2 coding standards.
 
+## Installation
+
+Put the pre-commit file in the .git/hooks/ folder in your git repository.
+
+Don't forget to make the pre-commit file executable
+
+	chmod +x .git/hooks/pre-commit
+
 ## Dependencies
 
 ### php codesniffer
@@ -31,10 +39,3 @@ CSS Lint is easy to install with the node package manager:
 
 	sudo npm install -g csslint
 
-## Installation
-
-Put the pre-commit file in the .git/hooks/ folder in your git repository.
-
-Don't forget to make the pre-commit file executable
-
-	chmod +x .git/hooks/pre-commit
