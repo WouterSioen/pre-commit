@@ -1,6 +1,6 @@
 #! /bin/bash
 #
-# This script checks if all added, copied, modified or renamed files are valid against the Fork coding standards
+# This script checks if all added, copied, modified or renamed files are valid against the PSR2 coding standards
 # and if there are no php, javascript or css errors
 # dependencies:
 # 	codesniffer (http://pear.php.net/package/PHP_CodeSniffer/redirected)
