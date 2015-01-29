@@ -8,6 +8,9 @@ This is a pre commit script that checks added, copied, modified or renamed files
 
 Put the pre-commit file in the .git/hooks/ folder in your git repository.
 
+	curl -O https://raw.githubusercontent.com/WouterSioen/pre-commit/master/pre-commit
+	mv pre-commit .git/hooks/pre-commit
+
 Don't forget to make the pre-commit file executable
 
 	chmod +x .git/hooks/pre-commit
