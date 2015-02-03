@@ -42,3 +42,10 @@ CSS Lint is easy to install with the node package manager:
 
 	sudo npm install -g csslint
 
+### SCSS lint
+
+[https://github.com/causes/scss-lint](https://github.com/causes/scss-lint)
+
+SCSS Lint is easy to install using ruby gems:
+
+	gem install scss-lint

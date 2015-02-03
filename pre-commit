@@ -6,6 +6,7 @@
 # 	codesniffer (http://pear.php.net/package/PHP_CodeSniffer/redirected)
 # 	esvalidate (https://github.com/duereg/esvalidate)
 # 	CSS lint (https://github.com/stubbornella/csslint/wiki/Command-line-interface)
+# 	SCSS lint (https://github.com/causes/scss-lint)
 #
 # @version	1.1.0
 # @author	Wouter Sioen <wouter.sioen@wijs.be>
@@ -93,6 +94,27 @@ if [ -n "$files" ]; then
 		if [ -n "$output" ]; then
 			echo "$file contains css syntax errors"
 			echo $output
+			errors=("${errors[@]}" "$output")
+		fi
+	done
+fi
+
+# fetch all changed css files and validate them
+files=$(git diff-index --name-only --diff-filter=ACMR $against | grep -E '\.s(c|a)ss$')
+if [ -n "$files" ]; then
+
+	echo
+	echo 'Checking SCSS Files'
+	echo '------------------'
+	echo
+
+	for file in $files; do
+		output=`scss-lint $file | grep '\[E\]'`
+
+		# if our output is not empty, there were errors
+		if [ -n "$output" ]; then
+			echo "$file contains scss syntax errors"
+			scss-lint $file | grep '\[E\]'
 			errors=("${errors[@]}" "$output")
 		fi
 	done
