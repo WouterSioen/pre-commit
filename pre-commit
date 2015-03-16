@@ -126,4 +126,7 @@ git stash pop -q
 # if we have errors, exit with 1
 if [ -n "$errors" ]; then
 	exit 1
+else
+	echo 'no errors found'
+	echo '🍺'
 fi
