@@ -3,7 +3,7 @@
 # This script checks if all added, copied, modified or renamed files are valid against the PSR2 coding standards
 # and if there are no php, javascript or css errors
 # dependencies:
-# 	codesniffer (http://pear.php.net/package/PHP_CodeSniffer/redirected)
+# 	codesniffer (http://pear.php.net/package/PHP_CodeSniffer)
 # 	esvalidate (https://github.com/duereg/esvalidate)
 # 	CSS lint (https://github.com/stubbornella/csslint/wiki/Command-line-interface)
 # 	SCSS lint (https://github.com/causes/scss-lint)
