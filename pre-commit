@@ -42,8 +42,8 @@ if [ -n "$files" ]; then
 			errors=("${errors[@]}" "$output")
 		fi
 
-		# checks if the phpcs output contains '| ERROR |'
-		output=`phpcs --standard=PSR2 --extensions=php --encoding=utf8 --report=full $file | grep '| ERROR |'`
+		# checks if the phpcs output contains '| ERROR '
+		output=`phpcs --standard=PSR2 --extensions=php --encoding=utf8 --report=full $file | grep '| ERROR '`
 
 		# if it did contain errors, we have output
 		if [ -n "$output" ]; then
